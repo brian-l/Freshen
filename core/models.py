@@ -1,6 +1,7 @@
 from django.db import models
 from pyinotify import EventsCodes
 
+# create an Event corresponding to each pyinotify event in Events.Codes
 class Event(models.Model):
 	# absolute file name
 	filename = models.CharField(default='', max_length=512)
