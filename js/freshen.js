@@ -2,21 +2,25 @@
 (function() {
 
   $(function() {
-    if (!window.hasOwnProperty('freshenReceive')) {
-      window.freshenReceive = function(data) {
-        return document.location = document.location;
-      };
-      return $.ajax({
-        url: 'http://localhost:9020/',
-        dataType: 'jsonp',
-        jsonp: false,
-        jsonpCallback: 'window.freshenReceive',
-        cache: true,
-        data: {
-          callback: 'window.freshenReceive'
-        }
-      });
-    }
+    window.freshenReceive = function(data) {
+      if (parseInt(data) > 0) {
+        return location.reload();
+      } else {
+        return $.ajax({
+          url: 'http://localhost:9020/',
+          dataType: 'jsonp',
+          jsonp: false,
+          jsonpCallback: 'window.freshenReceive',
+          cache: true,
+          data: {
+            callback: 'freshenReceive'
+          }
+        });
+      }
+    };
+    return window.setTimeout((function() {
+      return window.freshenReceive(0);
+    }), 1000);
   });
 
 }).call(this);

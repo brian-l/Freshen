@@ -23,8 +23,8 @@ from django.db.models import Q
 class MainHandler(tornado.web.RequestHandler):
 	def initialize(self, blacklist):
 		# build the blacklist that will be applied to each query
-		qobjs = (Q(filename__regex=r"%s" % (q)) for q in blacklist)
-		self.blacklist = reduce(operator.or_, qobjs)
+		qobjs = (~Q(filename__icontains="%s" % (q)) for q in blacklist)
+		self.blacklist = reduce(operator.and_, qobjs)
 	#
 	# get(self) is called when the application receives a GET request
 	#
@@ -39,18 +39,19 @@ class MainHandler(tornado.web.RequestHandler):
 			else:
 				# wait for 20 seconds, if no activity, send response
 				def wait_for_events(iteration):
-					queue = Event.objects.all()
+					queue = Event.objects.filter(self.blacklist)
+					print queue
+					# print queue, queue.query
 					if iteration >= 40 and not len(queue):
 						self.write_callback(0)
 					elif len(queue):
-						# delete all the objects, even the ones that are blacklisted
-						Event.objects.all().delete()
-						self.write_callback(1)
+						self.write_callback(len(queue))
 					else:
 						tornado.ioloop.IOLoop.instance().add_timeout(time.time() + 0.5, lambda: wait_for_events(iteration + 1))
 				wait_for_events(0)
 		else:
-			self.write_callback(0)
+			self.write('Invalid request.')
+			self.finish()
 
 	#
 	# return a response "callback(events)" where events is 0 or non-zero integer
@@ -60,6 +61,7 @@ class MainHandler(tornado.web.RequestHandler):
 		self.set_header('Access-Control-Allow-Origin', '*')
 		response = "%s(%s)" % (self.get_argument('callback'), events)
 		self.write(response)
+		Event.objects.all().delete()
 		self.finish()
 
 #

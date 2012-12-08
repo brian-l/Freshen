@@ -8,10 +8,8 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
 )
 
-# list of file regexes to ignore. when an event occurs,
-# any events that match are removed
-# NOTE: the evaluation of these expressions is subject the sqlite3 implementation
-BLACKLIST = ('[A-Za-z0-9]*.swp', '[A-Za-z0-9]*.swp')
+# list of filename contents to ignore
+BLACKLIST = ('swp', 'pyc')
 
 # see pyinotify documentation for more masks.
 MASK = EventsCodes.ALL_FLAGS['IN_CREATE'] | EventsCodes.ALL_FLAGS['IN_MODIFY'] | EventsCodes.ALL_FLAGS['IN_DELETE']

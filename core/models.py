@@ -13,7 +13,6 @@ class Event(models.Model):
 
 	def get_key(self):
 		type = [k for k, v in EventsCodes.ALL_FLAGS.iteritems() if v & self.type][0]
-		print type
 		return type
 
 	def __str__(self):
