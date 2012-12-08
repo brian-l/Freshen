@@ -30,9 +30,7 @@ Using the first method:
 
 2. Add the ScriptInject class to your MIDDLEWARE_CLASSES variable. 
 
-3. Add `DEVELOPMENT = True` to your settings.py. 
-
-	* In your production environment, don't forget to change this to False. 
+3. Add `DEVELOPMENT = True` to your settings.py. __In your production environment, don't forget to change this to False.__
 
 4. Put `freshen.js` in your staticfiles __ROOT__ directory, so the middleware can access it using your STATIC_URL variable.
 
