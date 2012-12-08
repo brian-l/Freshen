@@ -14,7 +14,6 @@ class ScriptInject():
 						head = tree.find('head')
 						# if this is false the content is malformed, skip it
 						if head:
-							print head
 							# create the freshen script element
 							freshen_script = etree.SubElement(head, 'script', type='text/javascript', charset='utf-8', src='%sfreshen.js' % (settings.STATIC_URL))
 
