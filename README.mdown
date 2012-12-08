@@ -10,6 +10,8 @@ Freshen tries to make your web development experience even easier by refreshing 
 * Pyinotify (and therefore Linux, as inotify is not available on other platforms)
 * Tornado
 * CoffeeScript (optional)
+* lxml
+* jQuery
 
 ### Installation
 
@@ -17,13 +19,24 @@ Freshen tries to make your web development experience even easier by refreshing 
 
 #### There are two official ways of using freshen
 
-1. Use the Django middleware provided to inject the freshen.js script into every HTTP request, based on your settings.DEVELOPMENT variable.
-2. Manually add the script tag to your base template file.
+* Use the Django middleware provided to inject the freshen.js script into every HTTP request, based on your settings.DEVELOPMENT variable.
+* Manually add the script tag to your base template file.
 
 The second method is not recommended, because you will need to remember to remove the tag before switching to production, as freshen is *not* meant for a production environment.
 
-Using the first method, copy or add `inject.py` to your project path, and add the ScriptInject class to your MIDDLEWARE_CLASSES variable. Add `DEVELOPMENT = True` to your settings.py. In your production environment, don't forget to change this to False.
+Using the first method:
+1. Copy or add `middleware/inject.py` to your project path, where it can import your settings.
+2. Add the ScriptInject class to your MIDDLEWARE_CLASSES variable. 
+3. Add `DEVELOPMENT = True` to your settings.py. 
+	* In your production environment, don't forget to change this to False. 
+4. Put `freshen.js` in your staticfiles *ROOT* directory, so the middleware can access it using your STATIC_URL variable.
 
 Start the server, `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability. 
 
 If you chose method one, your installation is complete. Your browser should connect on http://localhost:9020 and reload every time your web root is modified.
+
+### Planned features
+
+* Easier configuration of development environment
+* Easier configuration of notify events (IN_ACCESS, IN_CLOSE, etc)
+* more ?

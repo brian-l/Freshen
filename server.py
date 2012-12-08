@@ -40,8 +40,6 @@ class MainHandler(tornado.web.RequestHandler):
 				# wait for 20 seconds, if no activity, send response
 				def wait_for_events(iteration):
 					queue = Event.objects.filter(self.blacklist)
-					print queue
-					# print queue, queue.query
 					if iteration >= 40 and not len(queue):
 						self.write_callback(0)
 					elif len(queue):
