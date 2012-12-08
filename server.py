@@ -83,7 +83,6 @@ if __name__ == '__main__':
 	# add a recursive watch on sys.argv[1]
 	wdd = wm.add_watch(sys.argv[1], settings.MASK, rec=True, auto_add=True)
 
-	# create server and start it on port 8000
 	server = tornado.httpserver.HTTPServer(worker)
 	try:
 		notifier.start()
