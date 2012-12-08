@@ -34,9 +34,9 @@ Using the first method:
 
 	* In your production environment, don't forget to change this to False. 
 
-4. Put `freshen.js` in your staticfiles _ROOT_ directory, so the middleware can access it using your STATIC_URL variable.
+4. Put `freshen.js` in your staticfiles __ROOT__ directory, so the middleware can access it using your STATIC_URL variable.
 
-You can now start the server with `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. _Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability._
+You can now start the server with `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. __Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability.__
 
 If you chose method one, your installation is complete. Your browser should connect on http://localhost:9020 and reload every time your web root is modified.
 
