@@ -55,12 +55,15 @@ class MainHandler(tornado.web.RequestHandler):
 	# return a response "callback(events)" where events is 0 or non-zero integer
 	#
 	def write_callback(self, events):
-		self.set_header('Content-Type', 'application/javascript')
-		self.set_header('Access-Control-Allow-Origin', '*')
-		response = "%s(%s)" % (self.get_argument('callback'), events)
-		self.write(response)
-		Event.objects.all().delete()
-		self.finish()
+		try:
+			self.set_header('Content-Type', 'application/javascript')
+			self.set_header('Access-Control-Allow-Origin', '*')
+			response = "%s(%s)" % (self.get_argument('callback'), events)
+			self.write(response)
+			Event.objects.all().delete()
+			self.finish()
+		except AssertionError:
+			pass	
 
 #
 # Create the worker to handle all the backend 
