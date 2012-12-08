@@ -1,0 +1,29 @@
+# Freshen 
+
+## A simple way to keep your web development environment fresh
+
+Freshen tries to make your web development experience even easier by refreshing your browser window when you make changes. Freshen is designed to run as a server that watches your web root for changes, then sends those changes to your browser through JSONP. Freshen is compatible with any framework, but Django is officially supported.
+
+### Dependencies
+
+* Django 1.3.2+
+* Pyinotify (and therefore Linux, as inotify is not available on other platforms)
+* Tornado
+* CoffeeScript (optional)
+
+### Installation
+
+`git clone https://github.com/brian-l/freshen`
+
+#### There are two official ways of using freshen
+
+1. Use the Django middleware provided to inject the freshen.js script into every HTTP request, based on your settings.DEVELOPMENT variable.
+2. Manually add the script tag to your base template file.
+
+The second method is not recommended, because you will need to remember to remove the tag before switching to production, as freshen is *not* meant for a production environment.
+
+Using the first method, copy or add `inject.py` to your project path, and add the ScriptInject class to your MIDDLEWARE_CLASSES variable. Add `DEVELOPMENT = True` to your settings.py. In your production environment, don't forget to change this to False.
+
+Start the server, `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability. 
+
+If you chose method one, your installation is complete. Your browser should connect on http://localhost:9020 and reload every time your web root is modified.
