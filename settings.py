@@ -1,7 +1,5 @@
 # Django settings for freshen project.
 
-from pyinotify import EventsCodes
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -9,16 +7,16 @@ ADMINS = (
 )
 
 # list of filename contents to ignore
-BLACKLIST = ('swp', 'pyc')
+BLACKLIST = ('swp', 'pyc', 'swx')
 
 # see pyinotify documentation for more masks.
-MASK = EventsCodes.ALL_FLAGS['IN_CREATE'] | EventsCodes.ALL_FLAGS['IN_MODIFY'] | EventsCodes.ALL_FLAGS['IN_DELETE']
+MASK = ('IN_CREATE', 'IN_MODIFY', 'IN_DELETE')
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3', 
         'NAME': 'events.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.

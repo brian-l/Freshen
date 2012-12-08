@@ -17,7 +17,7 @@ setup_environ(settings)
 
 from core.models import Event 
 from core.watcher import Processor
-from pyinotify import WatchManager, ThreadedNotifier
+from pyinotify import WatchManager, ThreadedNotifier, EventsCodes
 from django.db.models import Q
 
 class MainHandler(tornado.web.RequestHandler):
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 	wm = WatchManager()
 	notifier = ThreadedNotifier(wm, Processor())
 	# add a recursive watch on sys.argv[1]
-	wdd = wm.add_watch(sys.argv[1], settings.MASK, rec=True, auto_add=True)
+	wdd = wm.add_watch(sys.argv[1], reduce(operator.or_, [EventsCodes.ALL_FLAGS[mask] for mask in settings.MASK]), rec=True, auto_add=True)
 
 	server = tornado.httpserver.HTTPServer(worker)
 	try:
