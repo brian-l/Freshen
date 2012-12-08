@@ -15,7 +15,7 @@ Freshen tries to make your web development experience even easier by refreshing 
 
 ### Installation
 
-`git clone https://github.com/brian-l/freshen`
+`git clone https://github.com/brian-l/Freshen.git`
 
 #### There are two official ways of using freshen
 
