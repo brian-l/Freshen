@@ -32,14 +32,32 @@ Using the first method:
 
 3. Add `DEVELOPMENT = True` to your settings.py. __In your production environment, don't forget to change this to False.__
 
-4. Put `freshen.js` in your staticfiles __ROOT__ directory, so the middleware can access it using your STATIC_URL variable.
+4. Add BLACKLIST = () to your settings.py (see blacklisting for more info)
+
+5. Put `freshen.js` in your staticfiles __ROOT__ directory, so the middleware can access it using your STATIC_URL variable.
 
 You can now start the server with `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. __Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability.__
 
 If you chose method one, your installation is complete. Your browser should connect on http://localhost:9020 and reload every time your web root is modified.
 
+### Blacklisting
+
+Freshen has a simple method for blacklisting files you don't want to watch (mainly the swp files created by Vim or compiled bytecode).
+To take advantage of this feature, simply add the file extension or some text in the filename(s) to the BLACKLIST variable, and those files will not trigger a browser refresh.
+
+Currently only text contained is supported, regular expression support is planned for the future.
+
+### How does it work?
+
+* Freshen watches a root directory using inotify, and when event occurs, it is saved into a queue (really just a sqlite3 database for ease).
+
+* Every 500 milliseconds, the queue is checked for new events, and if those events do not contain blacklisted files, they will be sent to freshen.js
+
+* The number of items in the queue is sent back to freshen.js via asynchronous JSONP, where the callback is executed, reloading the page.
+
 ### Planned features
 
-* Easier configuration of development environment
+* Automagical configuration (especially for BLACKLIST and DEVELOPMENT variables)
 * Easier configuration of notify events (IN_ACCESS, IN_CLOSE, etc)
+* Regex blacklisting
 * more ?
