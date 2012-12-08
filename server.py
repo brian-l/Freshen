@@ -40,11 +40,14 @@ class MainHandler(tornado.web.RequestHandler):
 				# wait for 20 seconds, if no activity, send response
 				def wait_for_events(iteration):
 					queue = Event.objects.filter(self.blacklist)
+					# 40 * 500 ms = 20 seconds
 					if iteration >= 40 and not len(queue):
 						self.write_callback(0)
+					# if len(queue) > 1, something happened
 					elif len(queue):
 						self.write_callback(len(queue))
 					else:
+						# wait 500 ms for activity
 						tornado.ioloop.IOLoop.instance().add_timeout(time.time() + 0.5, lambda: wait_for_events(iteration + 1))
 				wait_for_events(0)
 		else:
@@ -56,10 +59,13 @@ class MainHandler(tornado.web.RequestHandler):
 	#
 	def write_callback(self, events):
 		try:
+			# these might be necessary
 			self.set_header('Content-Type', 'application/javascript')
 			self.set_header('Access-Control-Allow-Origin', '*')
+			# return 'callback(args)' to be executed by browser
 			response = "%s(%s)" % (self.get_argument('callback'), events)
 			self.write(response)
+			# remove the events
 			Event.objects.all().delete()
 			self.finish()
 		except AssertionError:
@@ -77,6 +83,7 @@ if __name__ == '__main__':
 		print 'Give a path to watch for changes.'
 		exit(0)
 
+	# remove any leftover events
 	Event.objects.all().delete()
 	wm = WatchManager()
 	notifier = ThreadedNotifier(wm, Processor())

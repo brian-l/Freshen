@@ -13,7 +13,7 @@
           jsonpCallback: 'window.freshenReceive',
           cache: true,
           data: {
-            callback: 'freshenReceive'
+            callback: 'window.freshenReceive'
           }
         });
       }
