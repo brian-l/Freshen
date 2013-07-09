@@ -34,8 +34,6 @@ Using the first method:
 
 4. Add any entries to BLACKLIST in the __server__ settings.py (see blacklisting for more info)
 
-5. Put `freshen.js` in your staticfiles __ROOT__ directory, so the middleware can access it using your STATIC_URL variable.
-
 You can now start the server with `python server.py <web root>`, where <web root> is the root directory that you want to watch for changes. __Beware, freshen makes inotify watches recursively and using a large directory like /usr may cause instability.__
 
 If you chose method one, your installation is complete. Your browser should connect on http://localhost:9020 and reload every time your web root is modified.
