@@ -32,7 +32,7 @@ class MainHandler(tornado.web.RequestHandler):
         with open('js/freshen.js', 'r') as js:
             self.freshenjs = js.read()
     """
-    get(self) is called when the application receives a GET request
+    get is called when the application receives a GET request
     """
     @tornado.web.asynchronous
     def get(self):
@@ -58,6 +58,7 @@ class MainHandler(tornado.web.RequestHandler):
                         # wait 500 ms for activity
                         tornado.ioloop.IOLoop.instance().add_timeout(time.time() + 0.5, lambda: wait_for_events(iteration + 1))
                 wait_for_events(0)
+        # send the freshen script so it doesn't have to be in the user's main project
         elif self.request.uri == '/freshen.js':
             self.write_callback()
         else:
